@@ -14,6 +14,7 @@ import com.rola.app.data.database.EnterpriseDao
 import com.rola.app.data.database.KnowledgeGraphDao
 import com.rola.app.data.database.NeuralAIDao
 import com.rola.app.data.database.ObjectDao
+import com.rola.app.data.database.QuantumAIDao
 import com.rola.app.data.database.QuizDao
 import com.rola.app.data.database.QuizResultDao
 import com.rola.app.data.database.ResearchDao
@@ -57,6 +58,7 @@ object DatabaseModule {
             AppDatabase.MIGRATION_14_15,
             AppDatabase.MIGRATION_15_16,
             AppDatabase.MIGRATION_16_17,
+            AppDatabase.MIGRATION_17_18,
         )
         .build()
 
@@ -113,4 +115,7 @@ object DatabaseModule {
 
     @Provides
     fun provideAGINetworkDao(database: AppDatabase): AGINetworkDao = database.agiNetworkDao()
+
+    @Provides
+    fun provideQuantumAIDao(database: AppDatabase): QuantumAIDao = database.quantumAIDao()
 }

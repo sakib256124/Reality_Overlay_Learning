@@ -81,6 +81,14 @@ import com.rola.app.data.database.entities.NeuralInteractionEntity
 import com.rola.app.data.database.entities.NeuralLearningPredictionEntity
 import com.rola.app.data.database.entities.NeuralLearningStateEntity
 import com.rola.app.data.database.entities.NeuralProfileEntity
+import com.rola.app.data.database.entities.KnowledgeDiscoveryRecordEntity
+import com.rola.app.data.database.entities.LearningOptimizationHistoryEntity
+import com.rola.app.data.database.entities.OptimizationResultEntity
+import com.rola.app.data.database.entities.QuantumAnalyticsEntity
+import com.rola.app.data.database.entities.QuantumDecisionEntity
+import com.rola.app.data.database.entities.QuantumModelEntity
+import com.rola.app.data.database.entities.QuantumPredictionEntity
+import com.rola.app.data.database.entities.QuantumProfileEntity
 import com.rola.app.data.database.entities.ResearchTaskEntity
 import com.rola.app.data.database.entities.ScanHistoryEntity
 import com.rola.app.data.database.entities.ScientificSourceEntity
@@ -192,8 +200,16 @@ import com.rola.app.data.database.entities.PersonalLearningPlanEntity
         AGINetworkCurriculumEvolutionEntity::class,
         AGINetworkAnalyticsEntity::class,
         AGINetworkGovernanceRecordEntity::class,
+        QuantumProfileEntity::class,
+        QuantumModelEntity::class,
+        OptimizationResultEntity::class,
+        QuantumDecisionEntity::class,
+        LearningOptimizationHistoryEntity::class,
+        QuantumPredictionEntity::class,
+        KnowledgeDiscoveryRecordEntity::class,
+        QuantumAnalyticsEntity::class,
     ],
-    version = 17,
+    version = 18,
     exportSchema = true,
 )
 @TypeConverters(StringListConverter::class, QuizConverters::class)
@@ -216,6 +232,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun embodiedAIDao(): EmbodiedAIDao
     abstract fun neuralAIDao(): NeuralAIDao
     abstract fun agiNetworkDao(): AGINetworkDao
+    abstract fun quantumAIDao(): QuantumAIDao
 
     companion object {
         val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -1775,6 +1792,128 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_agi_network_governance_records_decision ON agi_network_governance_records(decision)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_agi_network_governance_records_humanApprovalRequired ON agi_network_governance_records(humanApprovalRequired)")
+            }
+        }
+
+        val MIGRATION_17_18 = object : Migration(17, 18) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS quantum_profiles (
+                        profileId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        computeMode TEXT NOT NULL,
+                        optimizationReadinessPercent INTEGER NOT NULL,
+                        preferredExplanationStyle TEXT NOT NULL,
+                        activeGoals TEXT NOT NULL DEFAULT '',
+                        updatedAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_profiles_learnerId ON quantum_profiles(learnerId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS quantum_models (
+                        modelId TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        computeMode TEXT NOT NULL,
+                        version TEXT NOT NULL,
+                        optimizationScope TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_models_computeMode ON quantum_models(computeMode)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS optimization_results (
+                        optimizationId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        learningOptimizationScore INTEGER NOT NULL,
+                        optimizedPath TEXT NOT NULL DEFAULT '',
+                        curriculumSequence TEXT NOT NULL DEFAULT '',
+                        assessmentStrategy TEXT NOT NULL,
+                        recommendationStrategy TEXT NOT NULL,
+                        explanation TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_optimization_results_learnerId ON optimization_results(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_optimization_results_topic ON optimization_results(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS quantum_decisions (
+                        decisionId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        decisionType TEXT NOT NULL,
+                        educationalAction TEXT NOT NULL,
+                        confidencePercent INTEGER NOT NULL,
+                        explanation TEXT NOT NULL,
+                        humanControlRequired INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_decisions_learnerId ON quantum_decisions(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_decisions_topic ON quantum_decisions(topic)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_decisions_decisionType ON quantum_decisions(decisionType)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS learning_optimization_history (
+                        historyId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        summary TEXT NOT NULL,
+                        score INTEGER NOT NULL,
+                        createdAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_learning_optimization_history_learnerId ON learning_optimization_history(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_learning_optimization_history_createdAt ON learning_optimization_history(createdAt)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS quantum_predictions (
+                        predictionId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        futurePerformancePercent INTEGER NOT NULL,
+                        skillDevelopment TEXT NOT NULL DEFAULT '',
+                        learningChallenges TEXT NOT NULL DEFAULT '',
+                        knowledgeRequirements TEXT NOT NULL DEFAULT '',
+                        longTermRoadmap TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_predictions_learnerId ON quantum_predictions(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_predictions_topic ON quantum_predictions(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS knowledge_discovery_records (
+                        discoveryId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        hiddenRelationships TEXT NOT NULL DEFAULT '',
+                        discoveredConcepts TEXT NOT NULL DEFAULT '',
+                        scientificSignals TEXT NOT NULL DEFAULT '',
+                        expansionRecommendation TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_knowledge_discovery_records_topic ON knowledge_discovery_records(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS quantum_analytics (
+                        reportId TEXT NOT NULL PRIMARY KEY,
+                        institutionId TEXT NOT NULL,
+                        learningOptimizationScore INTEGER NOT NULL,
+                        aiImprovementPercent INTEGER NOT NULL,
+                        predictionAccuracyPercent INTEGER NOT NULL,
+                        systemIntelligenceGrowth TEXT NOT NULL DEFAULT '',
+                        auditNotes TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_analytics_institutionId ON quantum_analytics(institutionId)")
             }
         }
     }

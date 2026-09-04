@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Hub
 import androidx.compose.material.icons.rounded.Psychology
 import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.School
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.ViewInAr
 import androidx.compose.material3.AssistChip
@@ -59,6 +60,7 @@ fun HomeScreen(
     onAdaptiveLearning: () -> Unit = {},
     onNeuralLearning: () -> Unit = {},
     onAGINetwork: () -> Unit = {},
+    onQuantumAI: () -> Unit = {},
     onProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -218,6 +220,16 @@ fun HomeScreen(
                         description = "Coordinate supervised AI agents for platform improvement.",
                         icon = Icons.Rounded.Hub,
                         onClick = onAGINetwork,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Quantum AI",
+                        description = "Optimize learning paths with quantum-inspired intelligence.",
+                        icon = Icons.Rounded.Tune,
+                        onClick = onQuantumAI,
                     )
                 }
             }

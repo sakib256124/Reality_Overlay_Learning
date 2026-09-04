@@ -26,6 +26,7 @@ sealed class Screen(val route: String) {
     data object AdaptiveLearning : Screen("adaptive_learning")
     data object NeuralLearning : Screen("neural_learning")
     data object AGINetwork : Screen("agi_network")
+    data object QuantumAI : Screen("quantum_ai")
     data object History : Screen("history")
     data object Profile : Screen("profile")
 }

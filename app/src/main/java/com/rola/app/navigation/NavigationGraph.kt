@@ -11,6 +11,7 @@ import com.rola.app.presentation.agi_network.AGINetworkDashboardScreen
 import com.rola.app.presentation.chatbot.ChatbotScreen
 import com.rola.app.presentation.history.LearningHistoryScreen
 import com.rola.app.presentation.neural_ai.NeuralLearningDashboardScreen
+import com.rola.app.presentation.quantum_ai.QuantumAIDashboardScreen
 import com.rola.app.presentation.quiz.QuizScreen
 import com.rola.app.presentation.scanner.ARScannerScreen
 import com.rola.app.presentation.screens.HomeScreen
@@ -56,6 +57,7 @@ fun NavigationGraph() {
                 onAdaptiveLearning = { navController.navigate(Screen.AdaptiveLearning.route) },
                 onNeuralLearning = { navController.navigate(Screen.NeuralLearning.route) },
                 onAGINetwork = { navController.navigate(Screen.AGINetwork.route) },
+                onQuantumAI = { navController.navigate(Screen.QuantumAI.route) },
                 onProfile = { navController.navigate(Screen.Profile.route) },
             )
         }
@@ -119,6 +121,9 @@ fun NavigationGraph() {
         }
         composable(Screen.AGINetwork.route) {
             AGINetworkDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.QuantumAI.route) {
+            QuantumAIDashboardScreen(onBack = navController::popBackStack)
         }
         composable(Screen.History.route) {
             LearningHistoryScreen(

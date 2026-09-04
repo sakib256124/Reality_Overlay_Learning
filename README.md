@@ -197,7 +197,7 @@ service cloud.firestore {
 
 ## Database
 
-Room database: `rola.db`, version `17`.
+Room database: `rola.db`, version `18`.
 
 Tables:
 
@@ -215,6 +215,7 @@ Tables:
 - `ai_curriculums`, `curriculum_modules`, `lessons`, `activities`, `assessments`, `ai_teaching_plans`, `teacher_reviews`, `lesson_analytics`: autonomous teacher planning, generated lessons, teacher approval, and lesson effectiveness analytics.
 - `neural_profiles`, `brain_signals`, `neural_cognitive_states`, `neural_learning_states`, `neural_interactions`, `attention_records`, `neural_learning_predictions`, `cognitive_reports`: future-ready neural learning interface, local signal analysis, explainable adaptation, and privacy-aware cognitive reporting.
 - `agi_network_agents`, `agi_network_agent_tasks`, `agi_network_agent_communication`, `agi_network_ai_evolution_history`, `agi_network_knowledge_evolution`, `agi_network_ai_decisions`, `agi_network_curriculum_evolution`, `agi_network_analytics`, `agi_network_governance_records`: supervised multi-agent AGI education network, self-learning draft plans, curriculum evolution, analytics, and governance audit records.
+- `quantum_profiles`, `quantum_models`, `optimization_results`, `quantum_decisions`, `learning_optimization_history`, `quantum_predictions`, `knowledge_discovery_records`, `quantum_analytics`: quantum-inspired learning optimization, prediction, knowledge discovery, curriculum intelligence, and responsible AI audit support.
 - Global cloud collections under `globalInstitutions`, `sharedKnowledgeResources`, `marketplaceListings`, `collaborationRooms`, `communityPosts`, `globalAnalytics`, and tenant-scoped `tenants/{institutionId}` paths support multi-institution knowledge sharing.
 
 ## Neural AI Learning
@@ -236,6 +237,16 @@ app/src/main/java/com/rola/app/agi_network/
 ```
 
 It coordinates AI Teacher, Tutor, Research, Knowledge, Assessment, Analytics, Robot Teaching, and Cognitive Learning agents. The system creates draft educational decisions, knowledge evolution proposals, curriculum updates, and analytics reports while keeping publication behind governance controls. See `docs/autonomous-agi-education-network-module-30.md`.
+
+## Quantum AI Learning
+
+Module 31 adds quantum-inspired education optimization under:
+
+```text
+app/src/main/java/com/rola/app/quantum_ai/
+```
+
+It prepares ROLA for future quantum computing integration while currently running deterministic classical optimization for learning paths, curriculum sequencing, prediction, knowledge discovery, simulation planning, and responsible AI auditing. See `docs/quantum-ai-learning-intelligence-module-31.md`.
 
 ## AI Tutor
 
