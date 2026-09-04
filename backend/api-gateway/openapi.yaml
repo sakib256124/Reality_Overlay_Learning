@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: ROLA Cloud API
+  version: 1.0.0
+servers:
+  - url: https://us-central1-PROJECT_ID.cloudfunctions.net/api
+security:
+  - firebaseAuth: []
+paths:
+  /users:
+    get:
+      summary: Get current user profile and preferences.
+    put:
+      summary: Update current user profile and preferences.
+  /objects:
+    get:
+      summary: List educational objects.
+    post:
+      summary: Add or update an object. Educator/admin only.
+  /objects/{id}:
+    get:
+      summary: Get object knowledge by id.
+  /search:
+    get:
+      summary: Search object knowledge.
+  /recognition:
+    post:
+      summary: Cloud-assisted recognition request.
+  /chat:
+    post:
+      summary: Personalized AI tutor request.
+  /translate:
+    post:
+      summary: Translate educational content.
+  /recommendations:
+    get:
+      summary: Get current recommendations.
+    post:
+      summary: Generate fresh recommendations.
+  /analytics:
+    get:
+      summary: Read recent user analytics.
+    post:
+      summary: Ingest learning, usage, AI, and performance event.
+  /admin/objects:
+    post:
+      summary: Add or update verified educational object content. Educator/admin only.
+    put:
+      summary: Update verified educational object content. Educator/admin only.
+  /admin/models:
+    get:
+      summary: List AI model registry entries. Educator/admin only.
+    post:
+      summary: Publish or update an AI model version. Educator/admin only.
+    put:
+      summary: Update an AI model version. Educator/admin only.
+  /admin/storage-assets:
+    post:
+      summary: Register a CDN/storage asset and version metadata. Educator/admin only.
+    put:
+      summary: Update CDN/storage asset metadata. Educator/admin only.
+  /admin/analytics:
+    get:
+      summary: Read platform analytics rollups. Educator/admin only.
+components:
+  securitySchemes:
+    firebaseAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Firebase ID token

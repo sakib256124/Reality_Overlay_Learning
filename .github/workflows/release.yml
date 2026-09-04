@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Release environment
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+      version_name:
+        description: Version name
+        required: true
+        default: 1.0.0
+      version_code:
+        description: Version code
+        required: true
+        default: "1"
+      play_track:
+        description: Google Play track
+        required: true
+        default: internal
+        type: choice
+        options:
+          - internal
+          - alpha
+          - beta
+          - production
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Configure local SDK path
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Restore Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode Firebase config
+        env:
+          GOOGLE_SERVICES_JSON: ${{ inputs.environment == 'production' && secrets.GOOGLE_SERVICES_JSON_PRODUCTION || secrets.GOOGLE_SERVICES_JSON_STAGING }}
+        run: |
+          test -n "$GOOGLE_SERVICES_JSON"
+          printf '%s' "$GOOGLE_SERVICES_JSON" > app/google-services.json
+
+      - name: Decode release keystore
+        env:
+          ROLA_RELEASE_KEYSTORE_BASE64: ${{ secrets.ROLA_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$ROLA_RELEASE_KEYSTORE_BASE64"
+          printf '%s' "$ROLA_RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/rola-release.keystore"
+
+      - name: Build signed app bundle
+        env:
+          ROLA_RELEASE_STORE_FILE: ${{ runner.temp }}/rola-release.keystore
+          ROLA_RELEASE_STORE_PASSWORD: ${{ secrets.ROLA_RELEASE_STORE_PASSWORD }}
+          ROLA_RELEASE_KEY_ALIAS: ${{ secrets.ROLA_RELEASE_KEY_ALIAS }}
+          ROLA_RELEASE_KEY_PASSWORD: ${{ secrets.ROLA_RELEASE_KEY_PASSWORD }}
+        run: |
+          ./gradlew :app:bundle${{ inputs.environment == 'production' && 'Production' || 'Staging' }}Release \
+            -PROLA_VERSION_NAME=${{ inputs.version_name }} \
+            -PROLA_VERSION_CODE=${{ inputs.version_code }} \
+            --stacktrace
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: rola-${{ inputs.environment }}-${{ inputs.version_name }}-aab
+          path: app/build/outputs/bundle/**/*.aab
+
+      - name: Publish production bundle to Google Play
+        if: inputs.environment == 'production'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.rola.app
+          releaseFiles: app/build/outputs/bundle/productionRelease/*.aab
+          track: ${{ inputs.play_track }}
+          status: draft
+
+      - name: Deploy Firebase backend
+        if: inputs.environment == 'production'
+        working-directory: backend
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          test -n "$FIREBASE_SERVICE_ACCOUNT"
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-service-account.json"
+          npm --prefix functions ci
+          npm --prefix functions run build
+          npx firebase-tools deploy --only firestore,storage,functions --project rola-production

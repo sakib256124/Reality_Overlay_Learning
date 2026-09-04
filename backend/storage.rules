@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function admin() {
+      return signedIn() && request.auth.token.role in ['admin', 'educator'];
+    }
+
+    match /objects/{objectId}/images/{version}/{fileName} {
+      allow read: if true;
+      allow write: if admin() && request.resource.size < 10 * 1024 * 1024;
+    }
+
+    match /objects/{objectId}/models/{version}/{fileName} {
+      allow read: if true;
+      allow write: if admin() && request.resource.size < 80 * 1024 * 1024;
+    }
+
+    match /ai-models/{modelFamily}/{version}/{fileName} {
+      allow read: if signedIn();
+      allow write: if admin() && request.resource.size < 120 * 1024 * 1024;
+    }
+
+    match /education-resources/{languageCode}/{fileName} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /user-uploads/{userId}/{allPaths=**} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+  }
+}

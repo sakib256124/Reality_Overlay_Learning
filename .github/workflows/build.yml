@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Configure local SDK path
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Restore Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Configure Firebase for dev build
+        env:
+          GOOGLE_SERVICES_JSON_DEV: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON_DEV" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON_DEV" > app/google-services.json
+          else
+            cp environments/dev/google-services.placeholder.json app/google-services.json
+          fi
+
+      - name: Compile dev debug Kotlin
+        run: ./gradlew :app:compileDevDebugKotlin --stacktrace
+
+      - name: Assemble dev debug
+        run: ./gradlew :app:assembleDevDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: rola-dev-debug-apk
+          path: app/build/outputs/apk/dev/debug/*.apk

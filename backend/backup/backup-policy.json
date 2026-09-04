@@ -1,0 +1,41 @@
+{
+  "name": "rola-production-backup-policy",
+  "environment": "production",
+  "firestore": {
+    "schedule": "0 2 * * *",
+    "timezone": "UTC",
+    "retentionDays": 30,
+    "collections": [
+      "users",
+      "objects",
+      "scanHistory",
+      "learningProfiles",
+      "recommendations",
+      "knowledgeNodes",
+      "knowledgeRelations",
+      "learningPaths",
+      "researchTasks",
+      "scientificSources",
+      "knowledgeUpdates",
+      "learningMaterials",
+      "contentVersions",
+      "aiModels",
+      "analytics",
+      "learningAnalytics",
+      "platformAnalytics"
+    ]
+  },
+  "storage": {
+    "versionedPrefixes": [
+      "objects/",
+      "ai-models/",
+      "education-resources/"
+    ],
+    "retentionDays": 90
+  },
+  "recovery": {
+    "rpoHours": 24,
+    "rtoHours": 8,
+    "drillFrequency": "quarterly"
+  }
+}

@@ -1,0 +1,10 @@
+bottle
+book
+cup
+chair
+table
+phone
+plant
+pen
+keyboard
+unknown

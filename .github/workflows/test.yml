@@ -1,0 +1,60 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Configure local SDK path
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Restore Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Configure Firebase for dev tests
+        env:
+          GOOGLE_SERVICES_JSON_DEV: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON_DEV" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON_DEV" > app/google-services.json
+          else
+            cp environments/dev/google-services.placeholder.json app/google-services.json
+          fi
+
+      - name: Android unit tests
+        run: ./gradlew :app:testDevDebugUnitTest --stacktrace
+
+      - name: Android lint
+        run: ./gradlew :app:lintDevDebug --stacktrace
+
+      - name: Backend build
+        working-directory: backend/functions
+        run: npm ci && npm run build
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-and-lint-reports
+          path: |
+            app/build/reports/tests/
+            app/build/reports/lint-results-*.html
+            backend/functions/lib/

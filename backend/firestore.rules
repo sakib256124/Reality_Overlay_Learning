@@ -1,0 +1,311 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function owns(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function admin() {
+      return signedIn() && request.auth.token.role in ['admin', 'educator'];
+    }
+
+    function institutionRole() {
+      return signedIn() && request.auth.token.role in ['admin', 'educator', 'teacher', 'institutionAdmin'];
+    }
+
+    function familyRole() {
+      return signedIn() && request.auth.token.role in ['admin', 'educator', 'teacher', 'institutionAdmin', 'parent'];
+    }
+
+    function globalAdmin() {
+      return signedIn() && request.auth.token.role in ['admin', 'superAdmin'];
+    }
+
+    match /users/{userId} {
+      allow read, update, delete: if owns(userId) || admin();
+      allow create: if owns(userId);
+
+      match /quizResults/{resultId} {
+        allow read, write: if owns(userId) || admin();
+      }
+    }
+
+    match /objects/{objectId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /scanHistory/{scanId} {
+      allow create: if owns(request.resource.data.userId) || admin();
+      allow read, update, delete: if owns(resource.data.userId) || admin();
+    }
+
+    match /learningProfiles/{userId} {
+      allow read, write: if owns(userId) || admin();
+    }
+
+    match /recommendations/{recommendationId} {
+      allow create: if owns(request.resource.data.userId) || admin();
+      allow read, update, delete: if owns(resource.data.userId) || admin();
+    }
+
+    match /translations/{languageCode}/translatedContent/{contentId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /3DModels/{modelId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /aiModels/{modelId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /analytics/{eventId} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if admin();
+    }
+
+    match /aiInteractions/{interactionId} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if admin();
+    }
+
+    match /learningAnalytics/{userId} {
+      allow read: if owns(userId) || admin();
+      allow write: if admin();
+    }
+
+    match /platformAnalytics/{windowId} {
+      allow read, write: if admin();
+    }
+
+    match /storageAssets/{assetId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /researchTasks/{taskId} {
+      allow read, write: if admin();
+    }
+
+    match /scientificSources/{sourceId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /knowledgeUpdates/{updateId} {
+      allow read, write: if admin();
+    }
+
+    match /learningMaterials/{materialId} {
+      allow read: if true;
+      allow write: if admin();
+    }
+
+    match /contentVersions/{versionId} {
+      allow read, write: if admin();
+    }
+
+    match /institutions/{institutionId} {
+      allow read: if institutionRole();
+      allow write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /roles/{roleId} {
+      allow read: if familyRole();
+      allow write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /departments/{departmentId} {
+      allow read: if institutionRole();
+      allow write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /courses/{courseId} {
+      allow read: if institutionRole();
+      allow write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin', 'teacher'];
+    }
+
+    match /classrooms/{classroomId} {
+      allow read, write: if institutionRole();
+    }
+
+    match /classes/{classId} {
+      allow read, write: if institutionRole();
+    }
+
+    match /members/{memberId} {
+      allow read: if familyRole();
+      allow write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /assignments/{assignmentId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /submissions/{submissionId} {
+      allow read: if familyRole();
+      allow create: if signedIn();
+      allow update, delete: if institutionRole();
+    }
+
+    match /classroomSessions/{sessionId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /teacherAnalytics/{reportId} {
+      allow read, write: if institutionRole();
+    }
+
+    match /studentReports/{reportId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /lmsConnections/{connectionId} {
+      allow read, write: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /teacherDashboards/{teacherId} {
+      allow read, write: if signedIn() && (request.auth.uid == teacherId || institutionRole());
+    }
+
+    match /curriculums/{curriculumId} {
+      allow read: if institutionRole() || familyRole();
+      allow create, update: if institutionRole() &&
+        request.resource.data.teacherId == request.auth.uid;
+      allow delete: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+    }
+
+    match /lessons/{lessonId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /activities/{activityId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /assessments/{assessmentId} {
+      allow read: if familyRole();
+      allow write: if institutionRole();
+    }
+
+    match /teachingPlans/{planId} {
+      allow read: if institutionRole();
+      allow write: if institutionRole();
+    }
+
+    match /teacherReviews/{reviewId} {
+      allow read: if institutionRole();
+      allow create: if institutionRole() &&
+        request.resource.data.teacherId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /lessonAnalytics/{analyticsId} {
+      allow read: if institutionRole();
+      allow write: if institutionRole();
+    }
+
+    match /privacySettings/{userId} {
+      allow read, write: if owns(userId) || institutionRole();
+    }
+
+    match /auditLogs/{auditId} {
+      allow create: if institutionRole();
+      allow read: if signedIn() && request.auth.token.role in ['admin', 'institutionAdmin'];
+      allow update, delete: if false;
+    }
+
+    match /globalInstitutions/{institutionId} {
+      allow read: if true;
+      allow create, update: if globalAdmin() || institutionRole();
+      allow delete: if globalAdmin();
+    }
+
+    match /institutionConnections/{connectionId} {
+      allow read, write: if institutionRole() || globalAdmin();
+    }
+
+    match /verificationRecords/{recordId} {
+      allow read, write: if globalAdmin();
+    }
+
+    match /sharedKnowledgeResources/{resourceId} {
+      allow read: if true;
+      allow create, update: if institutionRole() || globalAdmin();
+      allow delete: if globalAdmin();
+    }
+
+    match /marketplaceListings/{listingId} {
+      allow read: if true;
+      allow write: if globalAdmin() || institutionRole();
+    }
+
+    match /collaborationRooms/{roomId} {
+      allow read, write: if familyRole() || globalAdmin();
+    }
+
+    match /projectWorkspaces/{workspaceId} {
+      allow read, write: if familyRole() || globalAdmin();
+    }
+
+    match /sharedLearningSessions/{sessionId} {
+      allow read, write: if familyRole() || globalAdmin();
+    }
+
+    match /communityPosts/{postId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if globalAdmin() || (signedIn() && resource.data.authorId == request.auth.uid);
+    }
+
+    match /discussionThreads/{threadId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /learningGroups/{groupId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /contributionScores/{contributorId} {
+      allow read: if true;
+      allow write: if globalAdmin();
+    }
+
+    match /recognitionBadges/{badgeId} {
+      allow read: if true;
+      allow write: if globalAdmin();
+    }
+
+    match /globalAnalytics/{reportId} {
+      allow read: if globalAdmin() || institutionRole();
+      allow write: if globalAdmin();
+    }
+
+    match /globalOpportunities/{opportunityId} {
+      allow read: if signedIn();
+      allow write: if globalAdmin();
+    }
+
+    match /tenants/{institutionId}/{document=**} {
+      allow read, write: if signedIn()
+        && (request.auth.token.role in ['admin', 'superAdmin'] || request.auth.token.institutionId == institutionId);
+    }
+  }
+}
