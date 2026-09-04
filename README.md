@@ -2,6 +2,8 @@
 
 ROLA is a native Android AI + AR educational platform. Learners scan real-world objects, get TensorFlow Lite recognition results, see AR information overlays, hear Text-to-Speech explanations, explore knowledge graphs, ask an AI tutor, translate learning content, complete quizzes, receive adaptive recommendations, and sync progress with Firebase-backed cloud services.
 
+Repository: `Reality_Overlay_Learning`.
+
 ## Architecture
 
 ```text
