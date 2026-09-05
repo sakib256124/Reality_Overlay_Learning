@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.rounded.AdminPanelSettings
 import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.History
@@ -61,6 +62,7 @@ fun HomeScreen(
     onNeuralLearning: () -> Unit = {},
     onAGINetwork: () -> Unit = {},
     onQuantumAI: () -> Unit = {},
+    onASICore: () -> Unit = {},
     onProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -230,6 +232,16 @@ fun HomeScreen(
                         description = "Optimize learning paths with quantum-inspired intelligence.",
                         icon = Icons.Rounded.Tune,
                         onClick = onQuantumAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "ASI Education",
+                        description = "Review supervised advanced intelligence learning strategies.",
+                        icon = Icons.Rounded.AdminPanelSettings,
+                        onClick = onASICore,
                     )
                 }
             }

@@ -7,6 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.rola.app.data.database.converters.QuizConverters
 import com.rola.app.data.database.converters.StringListConverter
+import com.rola.app.data.database.entities.AICreativeOutputEntity
 import com.rola.app.data.database.entities.AGIEvolutionHistoryEntity
 import com.rola.app.data.database.entities.AGIMemoryEntity
 import com.rola.app.data.database.entities.AGINetworkAgentCommunicationEntity
@@ -18,6 +19,9 @@ import com.rola.app.data.database.entities.AGINetworkDecisionEntity
 import com.rola.app.data.database.entities.AGINetworkGovernanceRecordEntity
 import com.rola.app.data.database.entities.AGINetworkKnowledgeEvolutionEntity
 import com.rola.app.data.database.entities.AIDecisionEntity
+import com.rola.app.data.database.entities.ASIModelEntity
+import com.rola.app.data.database.entities.ASIProfileEntity
+import com.rola.app.data.database.entities.ASIGovernanceRecordEntity
 import com.rola.app.data.database.entities.ChatMessageEntity
 import com.rola.app.data.database.entities.AssignmentEntity
 import com.rola.app.data.database.entities.AssignmentSubmissionEntity
@@ -32,6 +36,7 @@ import com.rola.app.data.database.entities.CognitiveProfileEntity
 import com.rola.app.data.database.entities.CognitiveReportEntity
 import com.rola.app.data.database.entities.CognitiveSkillMapEntity
 import com.rola.app.data.database.entities.BrainSignalEntity
+import com.rola.app.data.database.entities.GlobalEducationInsightEntity
 import com.rola.app.data.database.entities.RobotAnalyticsEntity
 import com.rola.app.data.database.entities.RobotClassroomSessionEntity
 import com.rola.app.data.database.entities.RobotInteractionEntity
@@ -66,10 +71,12 @@ import com.rola.app.data.database.entities.InstitutionAnalyticsEntity
 import com.rola.app.data.database.entities.InstitutionEntity
 import com.rola.app.data.database.entities.InstitutionMemberEntity
 import com.rola.app.data.database.entities.KnowledgeEvolutionEntity
+import com.rola.app.data.database.entities.KnowledgeEvolutionRecordEntity
 import com.rola.app.data.database.entities.KnowledgeUpdateEntity
 import com.rola.app.data.database.entities.LMSConnectionEntity
 import com.rola.app.data.database.entities.LearnerModelEntity
 import com.rola.app.data.database.entities.LearningGoalEntity
+import com.rola.app.data.database.entities.HumanAIInteractionEntity
 import com.rola.app.data.database.entities.LearningPatternEntity
 import com.rola.app.data.database.entities.LearningMaterialEntity
 import com.rola.app.data.database.entities.LearningEnvironmentEntity
@@ -89,6 +96,7 @@ import com.rola.app.data.database.entities.QuantumDecisionEntity
 import com.rola.app.data.database.entities.QuantumModelEntity
 import com.rola.app.data.database.entities.QuantumPredictionEntity
 import com.rola.app.data.database.entities.QuantumProfileEntity
+import com.rola.app.data.database.entities.ReasoningHistoryEntity
 import com.rola.app.data.database.entities.ResearchTaskEntity
 import com.rola.app.data.database.entities.ScanHistoryEntity
 import com.rola.app.data.database.entities.ScientificSourceEntity
@@ -100,6 +108,7 @@ import com.rola.app.data.database.entities.SpatialSessionEntity
 import com.rola.app.data.database.entities.SpatialSimulationEntity
 import com.rola.app.data.database.entities.SpatialWorldEntity
 import com.rola.app.data.database.entities.StudentReportEntity
+import com.rola.app.data.database.entities.SelfImprovementLogEntity
 import com.rola.app.data.database.entities.TeacherReviewEntity
 import com.rola.app.data.database.entities.TranslationCacheEntity
 import com.rola.app.data.database.entities.UserEntity
@@ -208,8 +217,17 @@ import com.rola.app.data.database.entities.PersonalLearningPlanEntity
         QuantumPredictionEntity::class,
         KnowledgeDiscoveryRecordEntity::class,
         QuantumAnalyticsEntity::class,
+        ASIProfileEntity::class,
+        ASIModelEntity::class,
+        ReasoningHistoryEntity::class,
+        KnowledgeEvolutionRecordEntity::class,
+        SelfImprovementLogEntity::class,
+        AICreativeOutputEntity::class,
+        HumanAIInteractionEntity::class,
+        ASIGovernanceRecordEntity::class,
+        GlobalEducationInsightEntity::class,
     ],
-    version = 18,
+    version = 19,
     exportSchema = true,
 )
 @TypeConverters(StringListConverter::class, QuizConverters::class)
@@ -233,6 +251,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun neuralAIDao(): NeuralAIDao
     abstract fun agiNetworkDao(): AGINetworkDao
     abstract fun quantumAIDao(): QuantumAIDao
+    abstract fun asiCoreDao(): ASICoreDao
 
     companion object {
         val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -1914,6 +1933,122 @@ abstract class AppDatabase : RoomDatabase() {
                     """.trimIndent(),
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_quantum_analytics_institutionId ON quantum_analytics(institutionId)")
+            }
+        }
+
+        val MIGRATION_18_19 = object : Migration(18, 19) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS asi_profiles (
+                        profileId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        intelligenceScope TEXT NOT NULL DEFAULT '',
+                        personalizationDepthPercent INTEGER NOT NULL,
+                        responsibleAIMode TEXT NOT NULL,
+                        updatedAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_asi_profiles_learnerId ON asi_profiles(learnerId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS asi_models (
+                        modelId TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        capabilities TEXT NOT NULL DEFAULT '',
+                        safetyBoundary TEXT NOT NULL,
+                        version TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS reasoning_history (
+                        traceId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        reasoningSteps TEXT NOT NULL DEFAULT '',
+                        confidencePercent INTEGER NOT NULL,
+                        explanation TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_reasoning_history_topic ON reasoning_history(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS knowledge_evolution_records (
+                        mapId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        domainConnections TEXT NOT NULL DEFAULT '',
+                        newKnowledgeLinks TEXT NOT NULL DEFAULT '',
+                        contentImprovementIdeas TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_knowledge_evolution_records_topic ON knowledge_evolution_records(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS self_improvement_logs (
+                        logId TEXT NOT NULL PRIMARY KEY,
+                        improvedAreas TEXT NOT NULL DEFAULT '',
+                        evaluationSummary TEXT NOT NULL,
+                        requiresOfflineValidation INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_self_improvement_logs_requiresOfflineValidation ON self_improvement_logs(requiresOfflineValidation)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS ai_creative_outputs (
+                        outputId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        educationalApproaches TEXT NOT NULL DEFAULT '',
+                        learningActivities TEXT NOT NULL DEFAULT '',
+                        simulations TEXT NOT NULL DEFAULT '',
+                        researchDirections TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_ai_creative_outputs_topic ON ai_creative_outputs(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS human_ai_interactions (
+                        interactionId TEXT NOT NULL PRIMARY KEY,
+                        planId TEXT NOT NULL,
+                        stakeholders TEXT NOT NULL DEFAULT '',
+                        aiSuggestions TEXT NOT NULL DEFAULT '',
+                        requiredApprovals TEXT NOT NULL DEFAULT '',
+                        feedbackLoop TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_human_ai_interactions_planId ON human_ai_interactions(planId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS asi_governance_records (
+                        recordId TEXT NOT NULL PRIMARY KEY,
+                        approvalStatus TEXT NOT NULL,
+                        riskLevel TEXT NOT NULL,
+                        transparencyNotes TEXT NOT NULL DEFAULT '',
+                        ethicsChecks TEXT NOT NULL DEFAULT '',
+                        humanOverrideAvailable INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_asi_governance_records_approvalStatus ON asi_governance_records(approvalStatus)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_asi_governance_records_riskLevel ON asi_governance_records(riskLevel)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS global_education_insights (
+                        insightId TEXT NOT NULL PRIMARY KEY,
+                        institutionId TEXT NOT NULL,
+                        globalEducationPatterns TEXT NOT NULL DEFAULT '',
+                        knowledgeSharingPlan TEXT NOT NULL,
+                        innovationOpportunities TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_global_education_insights_institutionId ON global_education_insights(institutionId)")
             }
         }
     }

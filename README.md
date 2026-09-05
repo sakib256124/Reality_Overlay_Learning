@@ -197,7 +197,7 @@ service cloud.firestore {
 
 ## Database
 
-Room database: `rola.db`, version `18`.
+Room database: `rola.db`, version `19`.
 
 Tables:
 
@@ -216,6 +216,7 @@ Tables:
 - `neural_profiles`, `brain_signals`, `neural_cognitive_states`, `neural_learning_states`, `neural_interactions`, `attention_records`, `neural_learning_predictions`, `cognitive_reports`: future-ready neural learning interface, local signal analysis, explainable adaptation, and privacy-aware cognitive reporting.
 - `agi_network_agents`, `agi_network_agent_tasks`, `agi_network_agent_communication`, `agi_network_ai_evolution_history`, `agi_network_knowledge_evolution`, `agi_network_ai_decisions`, `agi_network_curriculum_evolution`, `agi_network_analytics`, `agi_network_governance_records`: supervised multi-agent AGI education network, self-learning draft plans, curriculum evolution, analytics, and governance audit records.
 - `quantum_profiles`, `quantum_models`, `optimization_results`, `quantum_decisions`, `learning_optimization_history`, `quantum_predictions`, `knowledge_discovery_records`, `quantum_analytics`: quantum-inspired learning optimization, prediction, knowledge discovery, curriculum intelligence, and responsible AI audit support.
+- `asi_profiles`, `asi_models`, `reasoning_history`, `knowledge_evolution_records`, `self_improvement_logs`, `ai_creative_outputs`, `human_ai_interactions`, `asi_governance_records`, `global_education_insights`: supervised ASI education reasoning, creative knowledge generation, human collaboration, and governance-ready global insight records.
 - Global cloud collections under `globalInstitutions`, `sharedKnowledgeResources`, `marketplaceListings`, `collaborationRooms`, `communityPosts`, `globalAnalytics`, and tenant-scoped `tenants/{institutionId}` paths support multi-institution knowledge sharing.
 
 ## Neural AI Learning
@@ -247,6 +248,16 @@ app/src/main/java/com/rola/app/quantum_ai/
 ```
 
 It prepares ROLA for future quantum computing integration while currently running deterministic classical optimization for learning paths, curriculum sequencing, prediction, knowledge discovery, simulation planning, and responsible AI auditing. See `docs/quantum-ai-learning-intelligence-module-31.md`.
+
+## ASI Education
+
+Module 32 adds a supervised Artificial Super Intelligence education foundation under:
+
+```text
+app/src/main/java/com/rola/app/asi_core/
+```
+
+It supports advanced reasoning, universal knowledge understanding, self-improvement planning, creative learning activity generation, human-AI collaboration, learning strategy optimization, governance review, and global education insights. See `docs/artificial-super-intelligence-education-module-32.md`.
 
 ## AI Tutor
 

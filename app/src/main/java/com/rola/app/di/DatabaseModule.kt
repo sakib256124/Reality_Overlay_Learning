@@ -2,6 +2,7 @@ package com.rola.app.di
 
 import android.content.Context
 import androidx.room.Room
+import com.rola.app.data.database.ASICoreDao
 import com.rola.app.data.database.AGIDao
 import com.rola.app.data.database.AGINetworkDao
 import com.rola.app.data.database.AITeacherDao
@@ -59,6 +60,7 @@ object DatabaseModule {
             AppDatabase.MIGRATION_15_16,
             AppDatabase.MIGRATION_16_17,
             AppDatabase.MIGRATION_17_18,
+            AppDatabase.MIGRATION_18_19,
         )
         .build()
 
@@ -118,4 +120,7 @@ object DatabaseModule {
 
     @Provides
     fun provideQuantumAIDao(database: AppDatabase): QuantumAIDao = database.quantumAIDao()
+
+    @Provides
+    fun provideASICoreDao(database: AppDatabase): ASICoreDao = database.asiCoreDao()
 }
