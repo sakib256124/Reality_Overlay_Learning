@@ -8,15 +8,33 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rola.app.presentation.adaptive.LearningDashboard
 import com.rola.app.presentation.agi_network.AGINetworkDashboardScreen
+import com.rola.app.presentation.ai_infrastructure.AIInfrastructureDashboardScreen
 import com.rola.app.presentation.ai_metaverse.MetaverseDashboardScreen
+import com.rola.app.presentation.ai_os.AIOSDashboardScreen
+import com.rola.app.presentation.ai_civilization.CivilizationDashboardScreen
+import com.rola.app.presentation.ai_research.ResearchIntelligenceDashboardScreen
 import com.rola.app.presentation.asi_core.ASIDashboardScreen
 import com.rola.app.presentation.chatbot.ChatbotScreen
+import com.rola.app.presentation.collective_ai.CollectiveAIDashboardScreen
+import com.rola.app.presentation.creative_ai.CreativeAIDashboardScreen
 import com.rola.app.presentation.digital_education_society.DigitalEducationSocietyDashboardScreen
+import com.rola.app.presentation.digital_companion.CompanionDashboardScreen
+import com.rola.app.presentation.education_singularity.SingularityDashboardScreen
+import com.rola.app.presentation.education_orchestration.EducationOrchestrationDashboardScreen
+import com.rola.app.presentation.emotional_ai.EmotionalLearningDashboardScreen
+import com.rola.app.presentation.lifelong_memory.LifelongLearningDashboardScreen
+import com.rola.app.presentation.mastery_ai.MasteryDashboardScreen
+import com.rola.app.presentation.predictive_ai.PredictiveDashboardScreen
 import com.rola.app.presentation.history.LearningHistoryScreen
+import com.rola.app.presentation.knowledge_engineering.KnowledgeIntelligenceDashboardScreen
 import com.rola.app.presentation.neural_ai.NeuralLearningDashboardScreen
+import com.rola.app.presentation.personal_agent.PersonalAgentDashboardScreen
 import com.rola.app.presentation.quantum_ai.QuantumAIDashboardScreen
 import com.rola.app.presentation.quiz.QuizScreen
+import com.rola.app.presentation.planning_ai.PlanningDashboardScreen
+import com.rola.app.presentation.reasoning_ai.ReasoningDashboardScreen
 import com.rola.app.presentation.scanner.ARScannerScreen
+import com.rola.app.presentation.self_evolving_ai.EvolutionDashboardScreen
 import com.rola.app.presentation.screens.HomeScreen
 import com.rola.app.presentation.screens.LoginScreen
 import com.rola.app.presentation.screens.ObjectDetailScreen
@@ -64,6 +82,24 @@ fun NavigationGraph() {
                 onASICore = { navController.navigate(Screen.ASICore.route) },
                 onDigitalEducationSociety = { navController.navigate(Screen.DigitalEducationSociety.route) },
                 onAIMetaverse = { navController.navigate(Screen.AIMetaverse.route) },
+                onAIInfrastructure = { navController.navigate(Screen.AIInfrastructure.route) },
+                onAIEducationOS = { navController.navigate(Screen.AIEducationOS.route) },
+                onDigitalCompanion = { navController.navigate(Screen.DigitalCompanion.route) },
+                onCollectiveAI = { navController.navigate(Screen.CollectiveAI.route) },
+                onEducationSingularity = { navController.navigate(Screen.EducationSingularity.route) },
+                onAICivilization = { navController.navigate(Screen.AICivilization.route) },
+                onLifelongMemory = { navController.navigate(Screen.LifelongMemory.route) },
+                onPredictiveAI = { navController.navigate(Screen.PredictiveAI.route) },
+                onEmotionalAI = { navController.navigate(Screen.EmotionalAI.route) },
+                onCreativeAI = { navController.navigate(Screen.CreativeAI.route) },
+                onAIResearchScientist = { navController.navigate(Screen.AIResearchScientist.route) },
+                onKnowledgeEngineering = { navController.navigate(Screen.KnowledgeEngineering.route) },
+                onReasoningAI = { navController.navigate(Screen.ReasoningAI.route) },
+                onPlanningAI = { navController.navigate(Screen.PlanningAI.route) },
+                onMasteryAI = { navController.navigate(Screen.MasteryAI.route) },
+                onPersonalAgent = { navController.navigate(Screen.PersonalAgent.route) },
+                onEducationOrchestration = { navController.navigate(Screen.EducationOrchestration.route) },
+                onSelfEvolvingAI = { navController.navigate(Screen.SelfEvolvingAI.route) },
                 onProfile = { navController.navigate(Screen.Profile.route) },
             )
         }
@@ -139,6 +175,60 @@ fun NavigationGraph() {
         }
         composable(Screen.AIMetaverse.route) {
             MetaverseDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.AIInfrastructure.route) {
+            AIInfrastructureDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.AIEducationOS.route) {
+            AIOSDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.DigitalCompanion.route) {
+            CompanionDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.CollectiveAI.route) {
+            CollectiveAIDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.EducationSingularity.route) {
+            SingularityDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.AICivilization.route) {
+            CivilizationDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.LifelongMemory.route) {
+            LifelongLearningDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.PredictiveAI.route) {
+            PredictiveDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.EmotionalAI.route) {
+            EmotionalLearningDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.CreativeAI.route) {
+            CreativeAIDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.AIResearchScientist.route) {
+            ResearchIntelligenceDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.KnowledgeEngineering.route) {
+            KnowledgeIntelligenceDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.ReasoningAI.route) {
+            ReasoningDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.PlanningAI.route) {
+            PlanningDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.MasteryAI.route) {
+            MasteryDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.PersonalAgent.route) {
+            PersonalAgentDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.EducationOrchestration.route) {
+            EducationOrchestrationDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.SelfEvolvingAI.route) {
+            EvolutionDashboardScreen(onBack = navController::popBackStack)
         }
         composable(Screen.History.route) {
             LearningHistoryScreen(

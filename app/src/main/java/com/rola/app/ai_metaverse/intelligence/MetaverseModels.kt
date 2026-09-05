@@ -43,7 +43,7 @@ data class MetaverseLearningRequest(
     val collaborationMode: String,
 )
 
-data class VirtualEducationWorld(
+data class VirtualEducationWorldState(
     val worldId: String,
     val title: String,
     val worldType: MetaverseWorldType,
@@ -64,7 +64,7 @@ data class DigitalLearningSpace(
 
 data class AIWorldBuildPlan(
     val planId: String,
-    val world: VirtualEducationWorld,
+    val world: VirtualEducationWorldState,
     val objects3d: List<String>,
     val activities: List<String>,
     val assessment: String,
@@ -110,7 +110,7 @@ data class MetaverseDigitalTwinPlan(
     val simulationAccuracy: String,
 )
 
-data class VirtualLearningCommunity(
+data class VirtualLearningCommunityState(
     val communityId: String,
     val discussionSpaces: List<String>,
     val collaborativeProjects: List<String>,
@@ -158,7 +158,7 @@ data class MetaverseEducationResult(
     val teacherAction: MetaverseTeacherAction,
     val classroomSession: VirtualClassroomSession,
     val digitalTwinPlan: MetaverseDigitalTwinPlan,
-    val community: VirtualLearningCommunity,
+    val community: VirtualLearningCommunityState,
     val economyPlan: MetaverseLearningEconomyPlan,
     val worldDecision: AIWorldDecision,
     val analyticsReport: MetaverseAnalyticsReport,
