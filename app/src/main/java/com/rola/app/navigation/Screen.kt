@@ -28,6 +28,8 @@ sealed class Screen(val route: String) {
     data object AGINetwork : Screen("agi_network")
     data object QuantumAI : Screen("quantum_ai")
     data object ASICore : Screen("asi_core")
+    data object DigitalEducationSociety : Screen("digital_education_society")
+    data object AIMetaverse : Screen("ai_metaverse")
     data object History : Screen("history")
     data object Profile : Screen("profile")
 }

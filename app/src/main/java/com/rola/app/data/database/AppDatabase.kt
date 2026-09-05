@@ -8,7 +8,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.rola.app.data.database.converters.QuizConverters
 import com.rola.app.data.database.converters.StringListConverter
 import com.rola.app.data.database.entities.AICreativeOutputEntity
-import com.rola.app.data.database.entities.AGIEvolutionHistoryEntity
+import com.rola.app.data.database.entities.MetaverseAnalyticsEntity
+import com.rola.app.data.database.entities.MetaverseAvatarInteractionEntity
+import com.rola.app.data.database.entities.MetaverseCommunitySpaceEntity
+import com.rola.app.data.database.entities.MetaverseDigitalSpaceEntity
+import com.rola.app.data.database.entities.MetaverseLearningAvatarEntity
+import com.rola.app.data.database.entities.MetaverseSessionEntity
+import com.rola.app.data.database.entities.MetaverseVirtualClassroomEntity
+import com.rola.app.data.database.entities.MetaverseVirtualExperimentEntity
+import com.rola.app.data.database.entities.MetaverseVirtualWorldEntity
+import com.rola.app.data.database.entities.AIEvolutionHistoryEntity
 import com.rola.app.data.database.entities.AGIMemoryEntity
 import com.rola.app.data.database.entities.AGINetworkAgentCommunicationEntity
 import com.rola.app.data.database.entities.AGINetworkAgentEntity
@@ -102,6 +111,13 @@ import com.rola.app.data.database.entities.ScanHistoryEntity
 import com.rola.app.data.database.entities.ScientificSourceEntity
 import com.rola.app.data.database.entities.SkillGraphEntity
 import com.rola.app.data.database.entities.DigitalTwinEntity
+import com.rola.app.data.database.entities.DigitalAvatarEntity
+import com.rola.app.data.database.entities.EducationInstitutionEntity
+import com.rola.app.data.database.entities.GlobalEducationNetworkEntity
+import com.rola.app.data.database.entities.GlobalLearningAnalyticsEntity
+import com.rola.app.data.database.entities.GovernancePolicyEntity
+import com.rola.app.data.database.entities.KnowledgeCommunityEntity
+import com.rola.app.data.database.entities.KnowledgeExchangeHistoryEntity
 import com.rola.app.data.database.entities.Spatial3DAssetEntity
 import com.rola.app.data.database.entities.SpatialInteractionHistoryEntity
 import com.rola.app.data.database.entities.SpatialSessionEntity
@@ -109,6 +125,8 @@ import com.rola.app.data.database.entities.SpatialSimulationEntity
 import com.rola.app.data.database.entities.SpatialWorldEntity
 import com.rola.app.data.database.entities.StudentReportEntity
 import com.rola.app.data.database.entities.SelfImprovementLogEntity
+import com.rola.app.data.database.entities.SocietyAIAgentEntity
+import com.rola.app.data.database.entities.SocietyInnovationRecordEntity
 import com.rola.app.data.database.entities.TeacherReviewEntity
 import com.rola.app.data.database.entities.TranslationCacheEntity
 import com.rola.app.data.database.entities.UserEntity
@@ -226,8 +244,26 @@ import com.rola.app.data.database.entities.PersonalLearningPlanEntity
         HumanAIInteractionEntity::class,
         ASIGovernanceRecordEntity::class,
         GlobalEducationInsightEntity::class,
+        GlobalEducationNetworkEntity::class,
+        KnowledgeCommunityEntity::class,
+        SocietyAIAgentEntity::class,
+        EducationInstitutionEntity::class,
+        SocietyInnovationRecordEntity::class,
+        GlobalLearningAnalyticsEntity::class,
+        DigitalAvatarEntity::class,
+        GovernancePolicyEntity::class,
+        KnowledgeExchangeHistoryEntity::class,
+        MetaverseVirtualWorldEntity::class,
+        MetaverseDigitalSpaceEntity::class,
+        MetaverseLearningAvatarEntity::class,
+        MetaverseVirtualClassroomEntity::class,
+        MetaverseSessionEntity::class,
+        MetaverseAvatarInteractionEntity::class,
+        MetaverseVirtualExperimentEntity::class,
+        MetaverseCommunitySpaceEntity::class,
+        MetaverseAnalyticsEntity::class,
     ],
-    version = 19,
+    version = 21,
     exportSchema = true,
 )
 @TypeConverters(StringListConverter::class, QuizConverters::class)
@@ -252,6 +288,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun agiNetworkDao(): AGINetworkDao
     abstract fun quantumAIDao(): QuantumAIDao
     abstract fun asiCoreDao(): ASICoreDao
+    abstract fun digitalEducationSocietyDao(): DigitalEducationSocietyDao
+    abstract fun aiMetaverseDao(): AIMetaverseDao
 
     companion object {
         val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -2049,6 +2087,263 @@ abstract class AppDatabase : RoomDatabase() {
                     """.trimIndent(),
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_global_education_insights_institutionId ON global_education_insights(institutionId)")
+            }
+        }
+
+        val MIGRATION_19_20 = object : Migration(19, 20) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS global_education_network (
+                        networkId TEXT NOT NULL PRIMARY KEY,
+                        institutionId TEXT NOT NULL,
+                        region TEXT NOT NULL,
+                        connectedParticipants TEXT NOT NULL DEFAULT '',
+                        sharedKnowledgeTopics TEXT NOT NULL DEFAULT '',
+                        learningImprovementPlan TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_global_education_network_institutionId ON global_education_network(institutionId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_global_education_network_region ON global_education_network(region)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS knowledge_communities (
+                        communityId TEXT NOT NULL PRIMARY KEY,
+                        collaborationGroups TEXT NOT NULL DEFAULT '',
+                        sharedResources TEXT NOT NULL DEFAULT '',
+                        aiRecommendations TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_knowledge_communities_communityId ON knowledge_communities(communityId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS ai_agents (
+                        agentId TEXT NOT NULL PRIMARY KEY,
+                        agentType TEXT NOT NULL,
+                        capabilities TEXT NOT NULL DEFAULT '',
+                        trustLevel TEXT NOT NULL,
+                        authenticated INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_ai_agents_agentType ON ai_agents(agentType)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_ai_agents_trustLevel ON ai_agents(trustLevel)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS education_institutions (
+                        institutionId TEXT NOT NULL PRIMARY KEY,
+                        region TEXT NOT NULL,
+                        languages TEXT NOT NULL DEFAULT '',
+                        activeServices TEXT NOT NULL DEFAULT '',
+                        accessibilityImprovements TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_education_institutions_institutionId ON education_institutions(institutionId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_education_institutions_region ON education_institutions(region)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS innovation_records (
+                        innovationId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        contentIdeas TEXT NOT NULL DEFAULT '',
+                        researchCollaborations TEXT NOT NULL DEFAULT '',
+                        exchangeValue TEXT NOT NULL,
+                        humanApprovalRequired INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_innovation_records_topic ON innovation_records(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS global_learning_analytics (
+                        reportId TEXT NOT NULL PRIMARY KEY,
+                        institutionId TEXT NOT NULL,
+                        worldwideTrends TEXT NOT NULL DEFAULT '',
+                        knowledgeGaps TEXT NOT NULL DEFAULT '',
+                        futureSkillNeeds TEXT NOT NULL DEFAULT '',
+                        improvementSummary TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_global_learning_analytics_institutionId ON global_learning_analytics(institutionId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS digital_avatars (
+                        avatarId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        learningHistory TEXT NOT NULL DEFAULT '',
+                        skills TEXT NOT NULL DEFAULT '',
+                        knowledgeLevel TEXT NOT NULL,
+                        goals TEXT NOT NULL DEFAULT '',
+                        achievements TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_digital_avatars_learnerId ON digital_avatars(learnerId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS governance_policies (
+                        policyId TEXT NOT NULL PRIMARY KEY,
+                        decision TEXT NOT NULL,
+                        trustLevel TEXT NOT NULL,
+                        accountabilityRules TEXT NOT NULL DEFAULT '',
+                        dataProtectionRules TEXT NOT NULL DEFAULT '',
+                        auditSummary TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_governance_policies_decision ON governance_policies(decision)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_governance_policies_trustLevel ON governance_policies(trustLevel)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS knowledge_exchange_history (
+                        exchangeId TEXT NOT NULL PRIMARY KEY,
+                        topic TEXT NOT NULL,
+                        validationSteps TEXT NOT NULL DEFAULT '',
+                        distributionReason TEXT NOT NULL,
+                        createdAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_knowledge_exchange_history_topic ON knowledge_exchange_history(topic)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_knowledge_exchange_history_createdAt ON knowledge_exchange_history(createdAt)")
+            }
+        }
+
+        val MIGRATION_20_21 = object : Migration(20, 21) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_virtual_worlds (
+                        worldId TEXT NOT NULL PRIMARY KEY,
+                        institutionId TEXT NOT NULL,
+                        title TEXT NOT NULL,
+                        worldType TEXT NOT NULL,
+                        subject TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        persistent INTEGER NOT NULL,
+                        spaces TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_virtual_worlds_institutionId ON metaverse_virtual_worlds(institutionId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_virtual_worlds_topic ON metaverse_virtual_worlds(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_digital_spaces (
+                        spaceId TEXT NOT NULL PRIMARY KEY,
+                        worldId TEXT NOT NULL,
+                        name TEXT NOT NULL,
+                        spaceType TEXT NOT NULL,
+                        interactiveObjects TEXT NOT NULL DEFAULT '',
+                        learningActivities TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_digital_spaces_worldId ON metaverse_digital_spaces(worldId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_digital_spaces_spaceType ON metaverse_digital_spaces(spaceType)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_learning_avatars (
+                        avatarId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        displayName TEXT NOT NULL,
+                        role TEXT NOT NULL,
+                        learningHistory TEXT NOT NULL DEFAULT '',
+                        skills TEXT NOT NULL DEFAULT '',
+                        achievements TEXT NOT NULL DEFAULT '',
+                        knowledgeLevel TEXT NOT NULL,
+                        personalityProfile TEXT NOT NULL,
+                        learningGoals TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_learning_avatars_learnerId ON metaverse_learning_avatars(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_learning_avatars_role ON metaverse_learning_avatars(role)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_virtual_classrooms (
+                        classroomId TEXT NOT NULL PRIMARY KEY,
+                        worldId TEXT NOT NULL,
+                        title TEXT NOT NULL,
+                        participants TEXT NOT NULL DEFAULT '',
+                        sharedObjects TEXT NOT NULL DEFAULT '',
+                        lessonFlow TEXT NOT NULL DEFAULT '',
+                        analyticsSignals TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_virtual_classrooms_worldId ON metaverse_virtual_classrooms(worldId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_sessions (
+                        sessionId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        worldId TEXT NOT NULL,
+                        classroomId TEXT NOT NULL,
+                        status TEXT NOT NULL,
+                        startedAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_sessions_learnerId ON metaverse_sessions(learnerId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_sessions_worldId ON metaverse_sessions(worldId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_avatar_interactions (
+                        interactionId TEXT NOT NULL PRIMARY KEY,
+                        avatarId TEXT NOT NULL,
+                        observedAction TEXT NOT NULL,
+                        environmentResponse TEXT NOT NULL,
+                        learningImprovement TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_avatar_interactions_avatarId ON metaverse_avatar_interactions(avatarId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_avatar_interactions_timestamp ON metaverse_avatar_interactions(timestamp)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_virtual_experiments (
+                        experimentId TEXT NOT NULL PRIMARY KEY,
+                        worldId TEXT NOT NULL,
+                        topic TEXT NOT NULL,
+                        manipulableSystems TEXT NOT NULL DEFAULT '',
+                        assessment TEXT NOT NULL,
+                        simulationAccuracy TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_virtual_experiments_worldId ON metaverse_virtual_experiments(worldId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_virtual_experiments_topic ON metaverse_virtual_experiments(topic)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_community_spaces (
+                        communityId TEXT NOT NULL PRIMARY KEY,
+                        discussionSpaces TEXT NOT NULL DEFAULT '',
+                        collaborativeProjects TEXT NOT NULL DEFAULT '',
+                        sharedKnowledge TEXT NOT NULL DEFAULT ''
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_community_spaces_communityId ON metaverse_community_spaces(communityId)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS metaverse_analytics (
+                        reportId TEXT NOT NULL PRIMARY KEY,
+                        learnerId TEXT NOT NULL,
+                        explorationScore INTEGER NOT NULL,
+                        collaborationScore INTEGER NOT NULL,
+                        engagementScore INTEGER NOT NULL,
+                        performanceSummary TEXT NOT NULL,
+                        governanceDecision TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_metaverse_analytics_learnerId ON metaverse_analytics(learnerId)")
             }
         }
     }

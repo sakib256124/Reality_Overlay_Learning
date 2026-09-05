@@ -62,7 +62,7 @@ class ASIDashboardViewModel @Inject constructor(
                 )
                 val result = withContext(defaultDispatcher) { asiEngine.solveEducationChallenge(challenge) }
                 withContext(ioDispatcher) { repository.saveResult(result) }
-                result.governanceRecord.approvalStatus.name
+                "${result.governanceRecord.approvalStatus.name}: ${result.professorResponse.explanation}"
             }.onSuccess { status ->
                 localState.update { it.copy(loading = false, message = "ASI output saved as $status.") }
             }.onFailure { error ->

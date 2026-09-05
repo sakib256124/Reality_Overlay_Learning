@@ -2,7 +2,7 @@ package com.rola.app.agi_network
 
 import com.rola.app.agi_network.intelligence.AGINetworkResult
 import com.rola.app.data.database.AGINetworkDao
-import com.rola.app.data.database.entities.AGIEvolutionHistoryEntity
+import com.rola.app.data.database.entities.AIEvolutionHistoryEntity
 import com.rola.app.data.database.entities.AGINetworkAgentCommunicationEntity
 import com.rola.app.data.database.entities.AGINetworkAgentTaskEntity
 import com.rola.app.data.database.entities.AGINetworkAnalyticsEntity
@@ -59,7 +59,7 @@ class AGINetworkRepository @Inject constructor(
             )
         })
         agiNetworkDao.upsertEvolutionHistory(
-            AGIEvolutionHistoryEntity(
+            AIEvolutionHistoryEntity(
                 evaluationId = result.selfLearningEvaluation.evaluationId,
                 teachingImprovement = result.selfLearningEvaluation.teachingImprovement,
                 recommendationAccuracyPercent = result.selfLearningEvaluation.recommendationAccuracyPercent,

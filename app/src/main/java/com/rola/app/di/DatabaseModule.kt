@@ -2,6 +2,7 @@ package com.rola.app.di
 
 import android.content.Context
 import androidx.room.Room
+import com.rola.app.data.database.AIMetaverseDao
 import com.rola.app.data.database.ASICoreDao
 import com.rola.app.data.database.AGIDao
 import com.rola.app.data.database.AGINetworkDao
@@ -10,6 +11,7 @@ import com.rola.app.data.database.AppDatabase
 import com.rola.app.data.database.AdaptiveLearningDao
 import com.rola.app.data.database.ChatMessageDao
 import com.rola.app.data.database.CognitiveAIDao
+import com.rola.app.data.database.DigitalEducationSocietyDao
 import com.rola.app.data.database.EmbodiedAIDao
 import com.rola.app.data.database.EnterpriseDao
 import com.rola.app.data.database.KnowledgeGraphDao
@@ -61,6 +63,8 @@ object DatabaseModule {
             AppDatabase.MIGRATION_16_17,
             AppDatabase.MIGRATION_17_18,
             AppDatabase.MIGRATION_18_19,
+            AppDatabase.MIGRATION_19_20,
+            AppDatabase.MIGRATION_20_21,
         )
         .build()
 
@@ -123,4 +127,11 @@ object DatabaseModule {
 
     @Provides
     fun provideASICoreDao(database: AppDatabase): ASICoreDao = database.asiCoreDao()
+
+    @Provides
+    fun provideDigitalEducationSocietyDao(database: AppDatabase): DigitalEducationSocietyDao =
+        database.digitalEducationSocietyDao()
+
+    @Provides
+    fun provideAIMetaverseDao(database: AppDatabase): AIMetaverseDao = database.aiMetaverseDao()
 }

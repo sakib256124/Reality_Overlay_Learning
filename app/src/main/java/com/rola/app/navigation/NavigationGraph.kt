@@ -8,8 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rola.app.presentation.adaptive.LearningDashboard
 import com.rola.app.presentation.agi_network.AGINetworkDashboardScreen
+import com.rola.app.presentation.ai_metaverse.MetaverseDashboardScreen
 import com.rola.app.presentation.asi_core.ASIDashboardScreen
 import com.rola.app.presentation.chatbot.ChatbotScreen
+import com.rola.app.presentation.digital_education_society.DigitalEducationSocietyDashboardScreen
 import com.rola.app.presentation.history.LearningHistoryScreen
 import com.rola.app.presentation.neural_ai.NeuralLearningDashboardScreen
 import com.rola.app.presentation.quantum_ai.QuantumAIDashboardScreen
@@ -60,6 +62,8 @@ fun NavigationGraph() {
                 onAGINetwork = { navController.navigate(Screen.AGINetwork.route) },
                 onQuantumAI = { navController.navigate(Screen.QuantumAI.route) },
                 onASICore = { navController.navigate(Screen.ASICore.route) },
+                onDigitalEducationSociety = { navController.navigate(Screen.DigitalEducationSociety.route) },
+                onAIMetaverse = { navController.navigate(Screen.AIMetaverse.route) },
                 onProfile = { navController.navigate(Screen.Profile.route) },
             )
         }
@@ -129,6 +133,12 @@ fun NavigationGraph() {
         }
         composable(Screen.ASICore.route) {
             ASIDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.DigitalEducationSociety.route) {
+            DigitalEducationSocietyDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.AIMetaverse.route) {
+            MetaverseDashboardScreen(onBack = navController::popBackStack)
         }
         composable(Screen.History.route) {
             LearningHistoryScreen(

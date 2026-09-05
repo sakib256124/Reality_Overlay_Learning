@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Hub
 import androidx.compose.material.icons.rounded.Psychology
+import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.School
 import androidx.compose.material.icons.rounded.Tune
@@ -63,6 +64,8 @@ fun HomeScreen(
     onAGINetwork: () -> Unit = {},
     onQuantumAI: () -> Unit = {},
     onASICore: () -> Unit = {},
+    onDigitalEducationSociety: () -> Unit = {},
+    onAIMetaverse: () -> Unit = {},
     onProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -242,6 +245,26 @@ fun HomeScreen(
                         description = "Review supervised advanced intelligence learning strategies.",
                         icon = Icons.Rounded.AdminPanelSettings,
                         onClick = onASICore,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Education Society",
+                        description = "Coordinate global AI knowledge communities and governance.",
+                        icon = Icons.Rounded.Public,
+                        onClick = onDigitalEducationSociety,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "AI Metaverse",
+                        description = "Enter persistent virtual classrooms, labs, and learning worlds.",
+                        icon = Icons.Rounded.ViewInAr,
+                        onClick = onAIMetaverse,
                     )
                 }
             }

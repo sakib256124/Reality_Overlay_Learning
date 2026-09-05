@@ -8,6 +8,7 @@ import com.rola.app.asi_core.intelligence.ASIApprovalStatus
 import com.rola.app.asi_core.intelligence.ASIEducationChallenge
 import com.rola.app.asi_core.intelligence.ASIEducationEngine
 import com.rola.app.asi_core.intelligence.ASIEngine
+import com.rola.app.asi_core.intelligence.ASIProfessorAgent
 import com.rola.app.asi_core.intelligence.ASIStakeholder
 import com.rola.app.asi_core.intelligence.LearningStrategyOptimizer
 import com.rola.app.asi_core.intelligence.SuperIntelligenceManager
@@ -30,6 +31,7 @@ class ASIEducationPlatformTest {
         creativeKnowledgeEngine = CreativeKnowledgeEngine(),
         collaborationManager = HumanAICollaborationManager(),
         strategyOptimizer = LearningStrategyOptimizer(),
+        professorAgent = ASIProfessorAgent(),
         governanceManager = ASIGovernanceManager(),
         worldEducationNetwork = ASIWorldEducationNetwork(),
     )
@@ -40,6 +42,7 @@ class ASIEducationPlatformTest {
 
         assertTrue(result.reasoningTrace.reasoningSteps.any { it.contains("prerequisite", ignoreCase = true) })
         assertTrue(result.learningStrategy.learningSequence.contains("Simplify explanation"))
+        assertTrue(result.professorResponse.humanReviewRequired)
         assertTrue(result.governanceRecord.humanOverrideAvailable)
     }
 

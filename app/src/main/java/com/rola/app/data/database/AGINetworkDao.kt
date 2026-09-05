@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.rola.app.data.database.entities.AGIEvolutionHistoryEntity
+import com.rola.app.data.database.entities.AIEvolutionHistoryEntity
 import com.rola.app.data.database.entities.AGINetworkAgentCommunicationEntity
 import com.rola.app.data.database.entities.AGINetworkAgentEntity
 import com.rola.app.data.database.entities.AGINetworkAgentTaskEntity
@@ -42,7 +42,7 @@ interface AGINetworkDao {
     suspend fun upsertMessages(messages: List<AGINetworkAgentCommunicationEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertEvolutionHistory(history: AGIEvolutionHistoryEntity)
+    suspend fun upsertEvolutionHistory(history: AIEvolutionHistoryEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertKnowledgeEvolution(proposal: AGINetworkKnowledgeEvolutionEntity)

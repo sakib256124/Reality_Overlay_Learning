@@ -146,6 +146,7 @@ data class ASIResult(
     val creativeOutput: CreativeKnowledgeOutput,
     val collaborationPlan: HumanAICollaborationPlan,
     val learningStrategy: LearningStrategyPlan,
+    val professorResponse: ASIProfessorResponse,
     val decision: ASIEducationDecision,
     val governanceRecord: ASIGovernanceRecord,
     val worldInsight: ASIWorldEducationInsight,

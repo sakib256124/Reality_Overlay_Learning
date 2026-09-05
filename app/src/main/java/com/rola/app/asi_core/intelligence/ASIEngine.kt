@@ -21,6 +21,7 @@ class ASIEngine @Inject constructor(
     private val creativeKnowledgeEngine: CreativeKnowledgeEngine,
     private val collaborationManager: HumanAICollaborationManager,
     private val strategyOptimizer: LearningStrategyOptimizer,
+    private val professorAgent: ASIProfessorAgent,
     private val governanceManager: ASIGovernanceManager,
     private val worldEducationNetwork: ASIWorldEducationNetwork,
 ) {
@@ -33,6 +34,7 @@ class ASIEngine @Inject constructor(
         val creativeOutput = creativeKnowledgeEngine.generate(knowledge)
         val collaboration = collaborationManager.createPlan(challenge, creativeOutput)
         val strategy = strategyOptimizer.optimize(challenge, knowledge)
+        val professorResponse = professorAgent.mentorLearner(challenge, reasoning, strategy)
         val decision = educationEngine.decisionFor(challenge, reasoning, strategy)
         val governance = governanceManager.review(decision)
         val worldInsight = worldEducationNetwork.globalInsight(challenge, knowledge)
@@ -47,6 +49,7 @@ class ASIEngine @Inject constructor(
             creativeOutput = creativeOutput,
             collaborationPlan = collaboration,
             learningStrategy = strategy,
+            professorResponse = professorResponse,
             decision = decision,
             governanceRecord = governance,
             worldInsight = worldInsight,
