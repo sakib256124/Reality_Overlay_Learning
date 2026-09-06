@@ -90,6 +90,14 @@ fun HomeScreen(
     onPersonalAgent: () -> Unit = {},
     onEducationOrchestration: () -> Unit = {},
     onSelfEvolvingAI: () -> Unit = {},
+    onDigitalTwinAI: () -> Unit = {},
+    onSpatialComputingAI: () -> Unit = {},
+    onVirtualCampusAI: () -> Unit = {},
+    onNeuralKnowledgeAI: () -> Unit = {},
+    onKnowledgeDiscoveryAI: () -> Unit = {},
+    onEducationMarketplaceAI: () -> Unit = {},
+    onGlobalEducationNetworkAI: () -> Unit = {},
+    onEducationEconomyAI: () -> Unit = {},
     onProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -469,6 +477,86 @@ fun HomeScreen(
                         description = "Analyze performance, learn from feedback, evolve models, and improve ROLA.",
                         icon = Icons.Rounded.AutoAwesome,
                         onClick = onSelfEvolvingAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Digital Twin AI",
+                        description = "Create real-world learning twins, simulations, sync, predictions, and experiments.",
+                        icon = Icons.Rounded.ViewInAr,
+                        onClick = onDigitalTwinAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Spatial Computing AI",
+                        description = "Understand environments, interactions, AR/VR spaces, and immersive learning analytics.",
+                        icon = Icons.Rounded.ViewInAr,
+                        onClick = onSpatialComputingAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Virtual Campus AI",
+                        description = "Open autonomous classrooms, avatar teachers, labs, collaboration, and campus analytics.",
+                        icon = Icons.Rounded.Public,
+                        onClick = onVirtualCampusAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Neural Knowledge AI",
+                        description = "Build brain-like learning pathways, memory reinforcement, and cognitive adaptation.",
+                        icon = Icons.Rounded.Psychology,
+                        onClick = onNeuralKnowledgeAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Knowledge Discovery AI",
+                        description = "Scan global sources, discover relationships, validate knowledge, and predict research futures.",
+                        icon = Icons.Rounded.Science,
+                        onClick = onKnowledgeDiscoveryAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Education Marketplace AI",
+                        description = "Recommend resources, manage creator networks, generate courses, and validate marketplace quality.",
+                        icon = Icons.Rounded.School,
+                        onClick = onEducationMarketplaceAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Global Education Network",
+                        description = "Connect institutions, research teams, global opportunities, translation, and knowledge exchange.",
+                        icon = Icons.Rounded.Public,
+                        onClick = onGlobalEducationNetworkAI,
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = showCards) {
+                    LearningActionCard(
+                        title = "Education Economy AI",
+                        description = "Manage digital assets, creator economy, innovation exchange, learning value, and certifications.",
+                        icon = Icons.Rounded.AutoAwesome,
+                        onClick = onEducationEconomyAI,
                     )
                 }
             }

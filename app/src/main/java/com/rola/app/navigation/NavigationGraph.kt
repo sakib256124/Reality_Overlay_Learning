@@ -19,15 +19,21 @@ import com.rola.app.presentation.collective_ai.CollectiveAIDashboardScreen
 import com.rola.app.presentation.creative_ai.CreativeAIDashboardScreen
 import com.rola.app.presentation.digital_education_society.DigitalEducationSocietyDashboardScreen
 import com.rola.app.presentation.digital_companion.CompanionDashboardScreen
+import com.rola.app.presentation.digital_twin_ai.DigitalTwinDashboardScreen
+import com.rola.app.presentation.education_marketplace_ai.EducationMarketplaceDashboardScreen
+import com.rola.app.presentation.education_economy_ai.EducationEconomyDashboardScreen
 import com.rola.app.presentation.education_singularity.SingularityDashboardScreen
 import com.rola.app.presentation.education_orchestration.EducationOrchestrationDashboardScreen
 import com.rola.app.presentation.emotional_ai.EmotionalLearningDashboardScreen
+import com.rola.app.presentation.global_education_network.GlobalEducationDashboardScreen
 import com.rola.app.presentation.lifelong_memory.LifelongLearningDashboardScreen
 import com.rola.app.presentation.mastery_ai.MasteryDashboardScreen
 import com.rola.app.presentation.predictive_ai.PredictiveDashboardScreen
 import com.rola.app.presentation.history.LearningHistoryScreen
+import com.rola.app.presentation.knowledge_discovery_ai.KnowledgeDiscoveryDashboardScreen
 import com.rola.app.presentation.knowledge_engineering.KnowledgeIntelligenceDashboardScreen
 import com.rola.app.presentation.neural_ai.NeuralLearningDashboardScreen
+import com.rola.app.presentation.neural_learning_ai.NeuralKnowledgeDashboardScreen
 import com.rola.app.presentation.personal_agent.PersonalAgentDashboardScreen
 import com.rola.app.presentation.quantum_ai.QuantumAIDashboardScreen
 import com.rola.app.presentation.quiz.QuizScreen
@@ -35,6 +41,7 @@ import com.rola.app.presentation.planning_ai.PlanningDashboardScreen
 import com.rola.app.presentation.reasoning_ai.ReasoningDashboardScreen
 import com.rola.app.presentation.scanner.ARScannerScreen
 import com.rola.app.presentation.self_evolving_ai.EvolutionDashboardScreen
+import com.rola.app.presentation.spatial_computing_ai.SpatialLearningDashboardScreen
 import com.rola.app.presentation.screens.HomeScreen
 import com.rola.app.presentation.screens.LoginScreen
 import com.rola.app.presentation.screens.ObjectDetailScreen
@@ -42,6 +49,7 @@ import com.rola.app.presentation.screens.ProfileScreen
 import com.rola.app.presentation.screens.SearchScreen
 import com.rola.app.presentation.screens.SplashScreen
 import com.rola.app.presentation.translation.TranslationScreen
+import com.rola.app.presentation.virtual_campus_ai.VirtualCampusDashboardScreen
 import com.rola.app.presentation.vision.VisionScannerScreen
 import com.rola.app.presentation.visualization.AR3DViewerScreen
 import com.rola.app.presentation.wearable.WearableDashboard
@@ -100,6 +108,14 @@ fun NavigationGraph() {
                 onPersonalAgent = { navController.navigate(Screen.PersonalAgent.route) },
                 onEducationOrchestration = { navController.navigate(Screen.EducationOrchestration.route) },
                 onSelfEvolvingAI = { navController.navigate(Screen.SelfEvolvingAI.route) },
+                onDigitalTwinAI = { navController.navigate(Screen.DigitalTwinAI.route) },
+                onSpatialComputingAI = { navController.navigate(Screen.SpatialComputingAI.route) },
+                onVirtualCampusAI = { navController.navigate(Screen.VirtualCampusAI.route) },
+                onNeuralKnowledgeAI = { navController.navigate(Screen.NeuralKnowledgeAI.route) },
+                onKnowledgeDiscoveryAI = { navController.navigate(Screen.KnowledgeDiscoveryAI.route) },
+                onEducationMarketplaceAI = { navController.navigate(Screen.EducationMarketplaceAI.route) },
+                onGlobalEducationNetworkAI = { navController.navigate(Screen.GlobalEducationNetworkAI.route) },
+                onEducationEconomyAI = { navController.navigate(Screen.EducationEconomyAI.route) },
                 onProfile = { navController.navigate(Screen.Profile.route) },
             )
         }
@@ -229,6 +245,30 @@ fun NavigationGraph() {
         }
         composable(Screen.SelfEvolvingAI.route) {
             EvolutionDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.DigitalTwinAI.route) {
+            DigitalTwinDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.SpatialComputingAI.route) {
+            SpatialLearningDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.VirtualCampusAI.route) {
+            VirtualCampusDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.NeuralKnowledgeAI.route) {
+            NeuralKnowledgeDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.KnowledgeDiscoveryAI.route) {
+            KnowledgeDiscoveryDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.EducationMarketplaceAI.route) {
+            EducationMarketplaceDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.GlobalEducationNetworkAI.route) {
+            GlobalEducationDashboardScreen(onBack = navController::popBackStack)
+        }
+        composable(Screen.EducationEconomyAI.route) {
+            EducationEconomyDashboardScreen(onBack = navController::popBackStack)
         }
         composable(Screen.History.route) {
             LearningHistoryScreen(

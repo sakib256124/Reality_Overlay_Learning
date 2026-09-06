@@ -18,17 +18,23 @@ import com.rola.app.data.database.CognitiveAIDao
 import com.rola.app.data.database.CreativeAIDao
 import com.rola.app.data.database.CollectiveAIDao
 import com.rola.app.data.database.DigitalEducationSocietyDao
+import com.rola.app.data.database.DigitalTwinAIDao
 import com.rola.app.data.database.DigitalCompanionDao
 import com.rola.app.data.database.EducationSingularityDao
 import com.rola.app.data.database.EducationOrchestrationDao
+import com.rola.app.data.database.EducationMarketplaceAIDao
+import com.rola.app.data.database.EducationEconomyAIDao
 import com.rola.app.data.database.EmbodiedAIDao
 import com.rola.app.data.database.EmotionalAIDao
 import com.rola.app.data.database.EnterpriseDao
+import com.rola.app.data.database.GlobalEducationNetworkDao
 import com.rola.app.data.database.KnowledgeGraphDao
 import com.rola.app.data.database.KnowledgeEngineeringDao
+import com.rola.app.data.database.KnowledgeDiscoveryAIDao
 import com.rola.app.data.database.LifelongMemoryDao
 import com.rola.app.data.database.MasteryAIDao
 import com.rola.app.data.database.NeuralAIDao
+import com.rola.app.data.database.NeuralLearningAIDao
 import com.rola.app.data.database.ObjectDao
 import com.rola.app.data.database.PersonalAgentDao
 import com.rola.app.data.database.PlanningAIDao
@@ -41,8 +47,10 @@ import com.rola.app.data.database.ResearchDao
 import com.rola.app.data.database.ScanHistoryDao
 import com.rola.app.data.database.SelfEvolvingAIDao
 import com.rola.app.data.database.SpatialAIDao
+import com.rola.app.data.database.SpatialComputingAIDao
 import com.rola.app.data.database.TranslationDao
 import com.rola.app.data.database.UserDao
+import com.rola.app.data.database.VirtualCampusAIDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -101,6 +109,14 @@ object DatabaseModule {
             AppDatabase.MIGRATION_36_37,
             AppDatabase.MIGRATION_37_38,
             AppDatabase.MIGRATION_38_39,
+            AppDatabase.MIGRATION_39_40,
+            AppDatabase.MIGRATION_40_41,
+            AppDatabase.MIGRATION_41_42,
+            AppDatabase.MIGRATION_42_43,
+            AppDatabase.MIGRATION_43_44,
+            AppDatabase.MIGRATION_44_45,
+            AppDatabase.MIGRATION_45_46,
+            AppDatabase.MIGRATION_46_47,
         )
         .build()
 
@@ -241,4 +257,36 @@ object DatabaseModule {
     @Provides
     fun provideSelfEvolvingAIDao(database: AppDatabase): SelfEvolvingAIDao =
         database.selfEvolvingAIDao()
+
+    @Provides
+    fun provideDigitalTwinAIDao(database: AppDatabase): DigitalTwinAIDao =
+        database.digitalTwinAIDao()
+
+    @Provides
+    fun provideSpatialComputingAIDao(database: AppDatabase): SpatialComputingAIDao =
+        database.spatialComputingAIDao()
+
+    @Provides
+    fun provideVirtualCampusAIDao(database: AppDatabase): VirtualCampusAIDao =
+        database.virtualCampusAIDao()
+
+    @Provides
+    fun provideNeuralLearningAIDao(database: AppDatabase): NeuralLearningAIDao =
+        database.neuralLearningAIDao()
+
+    @Provides
+    fun provideKnowledgeDiscoveryAIDao(database: AppDatabase): KnowledgeDiscoveryAIDao =
+        database.knowledgeDiscoveryAIDao()
+
+    @Provides
+    fun provideEducationMarketplaceAIDao(database: AppDatabase): EducationMarketplaceAIDao =
+        database.educationMarketplaceAIDao()
+
+    @Provides
+    fun provideGlobalEducationNetworkDao(database: AppDatabase): GlobalEducationNetworkDao =
+        database.globalEducationNetworkDao()
+
+    @Provides
+    fun provideEducationEconomyAIDao(database: AppDatabase): EducationEconomyAIDao =
+        database.educationEconomyAIDao()
 }
